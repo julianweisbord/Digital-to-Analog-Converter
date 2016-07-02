@@ -41,7 +41,7 @@ int main(int argc, char** argv){
 
   //convert it to decimal
     dec_num = binDec(d_signal, length);
-  //divide the number by 2^8 and this is the DC Voltage
+  //divide the number by 2^8 and this is the DC Current
     current = dec_num/256.0;
     cout<< "Your Analog Direct Current is " << current << endl;
   return 0;
@@ -50,8 +50,9 @@ int main(int argc, char** argv){
 int binDec(int* binaryNumber, int length){
   int decimal = 0;
   int n=0;
-  for(int i = 0; i <length; ++i){
-    decimal+= binaryNumber[i]*exp2(n);//2^n * bit
+  for(int i = length; i >0; --i){
+    decimal+= binaryNumber[i-1]*exp2(n);//2^n * bit
+    // cout << "Decimal: " << decimal<< ", " << i << endl;
     n+=1;
   }
   cout << "Decimal is: " << decimal << endl;
@@ -61,7 +62,6 @@ int binDec(int* binaryNumber, int length){
 bool err_check(int* checkArr, int length){
   short check = 0;
   for(int i=0; i<length; ++i){
-    cout << "for loop"<< endl;
     if(checkArr[i]== 0){
       ++check;
       if(check == length)
