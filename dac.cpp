@@ -10,7 +10,7 @@ void introduction();
 int* get_num(int, int*, float);
 bool err_check(int*, int);
 int binDec(int*, int);
-float get_amplitude(float);
+float get_voltage_high(float);
 
 int main(int argc, char** argv){
   int *d_signal;
@@ -18,35 +18,36 @@ int main(int argc, char** argv){
   // const int length = sizeof(d_signal)/sizeof(int);
   const int length = 8;
   int bin_num[length]={1,0,0,1,0,0,0,1}; // default 8 bit binary number
-  float amplitude = 1;
+  float voltage_high = 5;// volts
   bool bit8;
   int dec_num;
-  float current;
+  float voltage;
 
 
   //intro
     introduction();
 
   //Take in an 8 bit binary number
-    d_signal =get_num(length, bin_num, amplitude);
-    cout << "Enter the amplitude of this digital wave: " <<endl;
-    cin >> amplitude;
-    get_amplitude(amplitude);
+    d_signal =get_num(length, bin_num, voltage_high);
+    cout << "Enter the max voltage of the digital wave: " <<endl;
+    cin >> voltage_high;
+    // add error checking
+    get_voltage_high(voltage_high);
   //error check based on number of bits, each number
     bit8 = err_check(d_signal, length);
 
     if(bit8 == 0){
       do{
 
-        d_signal =get_num(length, bin_num, amplitude);
+        d_signal =get_num(length, bin_num, voltage_high);
       }while(bit8==false);
     }
 
   //convert it to decimal
     dec_num = binDec(d_signal, length);
   //divide the number by 2^8 and this is the DC Current
-    current = amplitude*dec_num/255.0;
-    cout<< "Your Analog Direct Current is " << current << " A"<< endl;
+    voltage = voltage_high*dec_num/255.0;
+    cout<< "Your Analog Voltage Output Is " << voltage << " V"<< endl;
   return 0;
 }
 
@@ -78,10 +79,10 @@ bool err_check(int* checkArr, int length){
 
 void introduction(){
 
-  cout << "This program takes an 8 bit binary number from a waveform and converts it to a direct current. This is called a Digital to Analog Converter." << endl;
+  cout << "This program takes an 8 bit binary signal from a waveform and converts it to a  voltage. This is called a Digital to Analog Converter." << endl;
 }
 
-int* get_num(int length, int *bin_num, float amplitude){
+int* get_num(int length, int *bin_num, float voltage_high){
 
   char def_char;
   cout<<"Should we enter a default binary string? (y or n)"<< endl;
@@ -103,6 +104,6 @@ int* get_num(int length, int *bin_num, float amplitude){
   return bin_num;
 
 }
-float get_amplitude(float amplitude){
-  return amplitude;
+float get_voltage_high(float voltage_high){
+  return voltage_high;
 }
