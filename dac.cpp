@@ -7,9 +7,10 @@
 using namespace std;
 
 void introduction();
-int* get_num(int, int*);
+int* get_num(int, int*, float);
 bool err_check(int*, int);
 int binDec(int*, int);
+float get_amplitude(float);
 
 int main(int argc, char** argv){
   int *d_signal;
@@ -17,6 +18,7 @@ int main(int argc, char** argv){
   // const int length = sizeof(d_signal)/sizeof(int);
   const int length = 8;
   int bin_num[length]={1,0,0,1,0,0,0,1}; // default 8 bit binary number
+  float amplitude = 1;
   bool bit8;
   int dec_num;
   float current;
@@ -26,24 +28,25 @@ int main(int argc, char** argv){
     introduction();
 
   //Take in an 8 bit binary number
-    d_signal =get_num(length, bin_num);
-    cout << "After get_num"<< endl;
+    d_signal =get_num(length, bin_num, amplitude);
+    cout << "Enter the amplitude of this digital wave: " <<endl;
+    cin >> amplitude;
+    get_amplitude(amplitude);
   //error check based on number of bits, each number
     bit8 = err_check(d_signal, length);
 
-    cout <<"After error check"<<endl;
     if(bit8 == 0){
       do{
 
-        d_signal =get_num(length, bin_num);
+        d_signal =get_num(length, bin_num, amplitude);
       }while(bit8==false);
     }
 
   //convert it to decimal
     dec_num = binDec(d_signal, length);
   //divide the number by 2^8 and this is the DC Current
-    current = dec_num/256.0;
-    cout<< "Your Analog Direct Current is " << current << endl;
+    current = amplitude*dec_num/255.0;
+    cout<< "Your Analog Direct Current is " << current << " A"<< endl;
   return 0;
 }
 
@@ -75,26 +78,31 @@ bool err_check(int* checkArr, int length){
 
 void introduction(){
 
-  cout << "This program takes an 8 bit binary number and converts it to a direct current. This is called a Digital to Analog Converter." << endl;
+  cout << "This program takes an 8 bit binary number from a waveform and converts it to a direct current. This is called a Digital to Analog Converter." << endl;
 }
 
-int* get_num(int length, int *bin_num){
+int* get_num(int length, int *bin_num, float amplitude){
 
   char def_char;
   cout<<"Should we enter a default binary string? (y or n)"<< endl;
   cin >> def_char;
   if(def_char !='y'){
-    cout << "Enter an 8 bit number"<< endl;
+    cout << "Enter an 8 bit number: "<< endl;
     for(int i =0; i < length; ++i){ //allow overwrite
       bin_num[i] = 0;
       cout << "Enter bit " << i << ": "<<endl;
       cin >> bin_num[i];
     }
+
   }
 
   for(int i = 0; i<length; ++i)//print array
     cout << bin_num[i] << " ";
   cout <<endl;
+
   return bin_num;
 
+}
+float get_amplitude(float amplitude){
+  return amplitude;
 }
